@@ -9,16 +9,19 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Allow login page
-  if (pathname === "/admin/login") {
+  // Allow login page and API routes
+  if (pathname === "/admin/login" || pathname.startsWith("/api/")) {
     return NextResponse.next();
   }
 
-  // Check for session token (NextAuth JWT cookie)
-  const sessionToken = request.cookies.get("next-auth.session-token")?.value
-    || request.cookies.get("__Secure-next-auth.session-token")?.value;
+  // Check for any NextAuth session cookie (v4 and v5)
+  const cookies = request.cookies;
+  const hasSession = cookies.has("next-auth.session-token")
+    || cookies.has("__Secure-next-auth.session-token")
+    || cookies.has("authjs.session-token")
+    || cookies.has("__Secure-authjs.session-token");
 
-  if (!sessionToken) {
+  if (!hasSession) {
     return NextResponse.redirect(new URL("/admin/login", request.url));
   }
 
