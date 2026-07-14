@@ -10,7 +10,7 @@ interface PageProps {
 export default async function EditArticlePage({ params }: PageProps) {
   const session = await auth();
 
-  if (!session) {
+  if (!session?.user) {
     redirect("/admin/login");
   }
 

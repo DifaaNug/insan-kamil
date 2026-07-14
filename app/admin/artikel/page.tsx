@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 export default async function AdminArtikelPage() {
   const session = await auth();
 
-  if (!session) {
+  if (!session?.user) {
     redirect("/admin/login");
   }
 

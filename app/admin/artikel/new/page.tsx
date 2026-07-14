@@ -6,9 +6,11 @@ import ArticleForm from "@/app/components/admin/ArticleForm";
 export default async function NewArticlePage() {
   const session = await auth();
 
-  if (!session) {
+  if (!session?.user) {
     redirect("/admin/login");
   }
+
+  const userId = session.user.id!;
 
   const handleSubmit = async (data: {
     title: string;
@@ -18,7 +20,7 @@ export default async function NewArticlePage() {
     content: any[];
   }) => {
     "use server";
-    const result = await createArticle(data, session.user.id);
+    const result = await createArticle(data, userId);
     return result || { success: true };
   };
 
