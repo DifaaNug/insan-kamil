@@ -60,7 +60,7 @@ export default function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link
-                  href="#beranda"
+                  href="/"
                   className="text-white/70 hover:text-secondary transition-colors"
                 >
                   Beranda
@@ -68,7 +68,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#tentang"
+                  href="/tentang"
                   className="text-white/70 hover:text-secondary transition-colors"
                 >
                   Tentang Kami
@@ -76,7 +76,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#artikel"
+                  href="/artikel"
                   className="text-white/70 hover:text-secondary transition-colors"
                 >
                   Artikel
@@ -84,10 +84,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#kategori"
+                  href="/kontak"
                   className="text-white/70 hover:text-secondary transition-colors"
                 >
-                  Kategori
+                  Kontak
                 </Link>
               </li>
             </ul>
