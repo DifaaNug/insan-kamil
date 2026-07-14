@@ -1,0 +1,50 @@
+// INSAN KAMIL - Database Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Role enum for user authorization
+enum Role {
+  ADMIN
+  USER
+}
+
+// User model for authentication
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String    // hashed with bcrypt
+  role          Role      @default(ADMIN)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  articles      Article[]
+
+  @@map("users")
+}
+
+// Article model
+model Article {
+  id            String           @id @default(cuid())
+  slug          String           @unique
+  title         String
+  category      String
+  authorName    String           // Display name of author
+  date          DateTime         @default(now())
+  content       Json             // Array of ArticleContent
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  authorId      String
+  author        User             @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([slug])
+  @@index([category])
+  @@index([date])
+  @@map("articles")
+}

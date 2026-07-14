@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { articles, getArticleBySlug } from "@/app/data/articles";
+import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
 
 interface PageProps {
@@ -8,6 +8,9 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
+  const articles = await prisma.article.findMany({
+    select: { slug: true },
+  });
   return articles.map((article) => ({
     slug: article.slug,
   }));
@@ -15,29 +18,39 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = await prisma.article.findUnique({
+    where: { slug },
+  });
 
   if (!article) {
     return { title: "Artikel Tidak Ditemukan" };
   }
 
+  const content = article.content as any[];
+  const description = content
+    .filter((c: any) => c.type === "paragraph")
+    .slice(0, 2)
+    .map((c: any) => c.text)
+    .join(" ");
+
   return {
     title: `${article.title} | INSAN KAMIL`,
-    description: article.content
-      .filter((c) => c.type === "paragraph")
-      .slice(0, 2)
-      .map((c) => c.text)
-      .join(" "),
+    description,
   };
 }
 
 export default async function ArticlePage({ params }: PageProps) {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = await prisma.article.findUnique({
+    where: { slug },
+    include: { author: true },
+  });
 
   if (!article) {
     notFound();
   }
+
+  const content = article.content as any[];
 
   return (
     <main className="min-h-screen bg-background">
@@ -87,7 +100,11 @@ export default async function ArticlePage({ params }: PageProps) {
                   d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                 />
               </svg>
-              {article.date}
+              {new Date(article.date).toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
             </span>
             <span className="flex items-center gap-2">
               <svg
@@ -112,7 +129,7 @@ export default async function ArticlePage({ params }: PageProps) {
       {/* Content */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="prose prose-lg max-w-none">
-          {article.content.map((item, index) => {
+          {content.map((item: any, index: number) => {
             if (item.type === "heading") {
               return (
                 <h2
