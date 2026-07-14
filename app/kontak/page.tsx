@@ -3,11 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 
-export const metadata = {
-  title: "Kontak | INSAN KAMIL",
-  description: "Hubungi kami melalui form kontak",
-};
-
 export default function KontakPage() {
   const [formData, setFormData] = useState({
     nama: "",
