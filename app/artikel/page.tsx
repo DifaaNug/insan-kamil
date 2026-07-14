@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = {
   title: "Semua Artikel | INSAN KAMIL",
   description: "Kumpulan artikel Islami tentang tafsir Al-Qur'an, dakwah, dan ukhuwah.",

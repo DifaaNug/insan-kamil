@@ -3,17 +3,10 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 interface PageProps {
   params: Promise<{ slug: string }>;
-}
-
-export async function generateStaticParams() {
-  const articles = await prisma.article.findMany({
-    select: { slug: true },
-  });
-  return articles.map((article) => ({
-    slug: article.slug,
-  }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
