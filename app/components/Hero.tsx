@@ -17,7 +17,7 @@ export default function Hero() {
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
 
       {/* Arabic Calligraphy Decoration */}
-      <div className="absolute top-32 right-10 md:right-20 text-white/5 font-arabic text-8xl md:text-[12rem] select-none pointer-events-none">
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 text-white/5 font-arabic text-6xl md:text-8xl select-none pointer-events-none whitespace-nowrap overflow-hidden">
         ﷽
       </div>
 
