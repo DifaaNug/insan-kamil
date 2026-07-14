@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter, Noto_Naskh_Arabic } from "next/font/google";
 import "./globals.css";
 
@@ -19,6 +19,14 @@ const notoArabic = Noto_Naskh_Arabic({
   subsets: ["arabic"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: "#1B4332",
+};
 
 export const metadata: Metadata = {
   title: "INSAN KAMIL | Menuntut Ilmu, Mengamalkan Dakwah",

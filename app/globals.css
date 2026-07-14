@@ -29,20 +29,46 @@
   --font-serif: var(--font-heading);
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   background: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-body), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 /* Heading font */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading), Georgia, serif;
+  word-wrap: break-word;
 }
 
-/* Smooth scroll */
-html {
-  scroll-behavior: smooth;
+/* Ensure images are responsive */
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Touch-friendly tap targets */
+button, a, input, select, textarea {
+  touch-action: manipulation;
+}
+
+/* Focus visible for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
 }
 
 /* Custom scrollbar */
@@ -140,4 +166,60 @@ html {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 640px) {
+  /* Reduce padding on mobile */
+  .py-20 {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .py-28 {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  /* Smaller heading sizes on mobile */
+  h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    line-height: 1.3;
+  }
+
+  /* Better touch targets */
+  a, button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Prevent horizontal scroll */
+  main, section, footer {
+    overflow-x: hidden;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 640px) and (max-width: 1024px) {
+  h1 {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+}
+
+/* Print styles */
+@media print {
+  nav, .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
 }
