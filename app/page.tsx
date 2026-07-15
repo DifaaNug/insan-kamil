@@ -6,6 +6,8 @@ import Categories from "./components/Categories";
 import LatestPosts from "./components/LatestPosts";
 import Footer from "./components/Footer";
 
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <main className="min-h-screen">
