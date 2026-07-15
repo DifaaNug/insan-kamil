@@ -2,7 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 
-export const dynamic = "force-dynamic";
+// ISR: Cache selama 60 detik
+export const revalidate = 60;
 
 export const metadata = {
   title: "Semua Artikel | INSAN KAMIL",

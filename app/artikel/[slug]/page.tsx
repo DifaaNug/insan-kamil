@@ -3,7 +3,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
+// ISR: Cache selama 60 detik
+export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{ slug: string }>;

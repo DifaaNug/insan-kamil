@@ -6,7 +6,8 @@ import Categories from "./components/Categories";
 import LatestPosts from "./components/LatestPosts";
 import Footer from "./components/Footer";
 
-export const dynamic = "force-dynamic";
+// ISR: Cache halaman selama 60 detik, lalu revalidate
+export const revalidate = 60;
 
 export default function Home() {
   return (
