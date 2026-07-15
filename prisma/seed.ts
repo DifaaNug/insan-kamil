@@ -31,6 +31,7 @@ async function main() {
       title: "Mensyukuri Nikmat Islam Yang Allah Subhanahu Wa Ta'ala Karuniakan Kepada Kita",
       category: "Tafsir",
       authorName: "De' FAD-LILLAH",
+      image: "https://insankamilbabel.wordpress.com/wp-content/uploads/2024/12/462621479_516747494455861_996110055708457861_n-2.jpg?w=720",
       date: new Date("2024-12-30"),
       content: [
         { type: "paragraph", text: "Yaa Ikhawanii rahimakumullah — Allah Azza wa Jalla berfirman:" },
@@ -50,6 +51,7 @@ async function main() {
       title: "Nikmat Yang Sesungguhnya,!",
       category: "Dakwah",
       authorName: "musyafir da'wah",
+      image: "https://insankamilbabel.wordpress.com/wp-content/uploads/2023/04/dscf1568.jpg?w=1024",
       date: new Date("2023-04-06"),
       content: [
         { type: "paragraph", text: "Bismillahirrahmanirrahim — Semoga bermanfaat. Amiin." },
@@ -64,6 +66,7 @@ async function main() {
       title: "Adakah Musholla di Rumah Kita?..",
       category: "Tafsir",
       authorName: "De' FAD-LILLAH",
+      image: "https://insankamilbabel.wordpress.com/wp-content/uploads/2023/02/100_4372.jpg?w=1024",
       date: new Date("2023-02-07"),
       content: [
         { type: "paragraph", text: "Sahabat Se-Iman Rahimakumullah — Kata MUSHOLLA secara bahasa dimaknai sebagai tempat sholat. Namun dalam Al-Qur'an, musholla berkaitan dengan sejarah perjuangan Nabi Ibrahim AS." },
@@ -77,6 +80,7 @@ async function main() {
       title: "Seperti Apakah Pohon Kehidupan Kita?..",
       category: "Dakwah",
       authorName: "Jabal fath, De' FAD-LILLAH",
+      image: "https://insankamilbabel.wordpress.com/wp-content/uploads/2023/02/100_3004.jpg?w=1024",
       date: new Date("2023-02-06"),
       content: [
         { type: "verse", arabic: "أَلَمْ تَرَ كَيْفَ ضَرَبَ اللَّهُ مَثَلًا كَلِمَةً طَيِّبَةً كَشَجَرَةٍ طَيِّبَةٍ أَصْلُهَا ثَابِتٌ وَفَرْعُهَا فِي السَّمَاءِ ۚ تُؤْتِي أُكُلَهَا كُلَّ حِينٍ بِإِذْنِ رَبِّهَا", translation: "Tidakkah kamu memperhatikan bagaimana Allah telah membuat perumpamaan kalimat yang baik seperti pohon yang baik, akarnya kuat dan cabangnya menjulang ke langit.", reference: "QS. Ibrahim: 24-25" },
@@ -89,6 +93,7 @@ async function main() {
       title: "Al Ukhuwah – Al Islamiyah – Al Jamaah",
       category: "Ukhuwah",
       authorName: "D. Syarif Zahda Ayman",
+      image: "https://insankamilbabel.wordpress.com/wp-content/uploads/2023/01/34984843_2189448661066094_2471734484639154176_n.jpg?w=960",
       date: new Date("2023-01-30"),
       content: [
         { type: "paragraph", text: "Jika setiap umat Islam hanya memikirkan nasib masing-masing — Palestina, negeri ini, bangsa Moro — di manakah ukhuwah Islamiyah? Di manakah universalitas Islam?" },
@@ -102,6 +107,7 @@ async function main() {
       title: "Emang Penting Islam Punya Pemimpin,.?",
       category: "Dakwah",
       authorName: "De' FAD-LILLAH",
+      image: "https://insankamilbabel.wordpress.com/wp-content/uploads/2023/01/pemimpin.jpg?w=750",
       date: new Date("2023-01-19"),
       content: [
         { type: "paragraph", text: "Apakah penting Islam memiliki pemimpin? Bukankah ibadah bisa berjalan lancar tanpa harus ada imam?" },
@@ -114,6 +120,7 @@ async function main() {
       title: "Umat Teladan .. Yang Tidak Meneladani ..",
       category: "Dakwah",
       authorName: "De' FAD-LILLAH",
+      image: "https://insankamilbabel.wordpress.com/wp-content/uploads/2023/01/teladan.jpg?w=492",
       date: new Date("2023-01-18"),
       content: [
         { type: "paragraph", text: "Saya membuka Al-Qur'an surat Ali Imran ayat 110, di mana Allah berfirman tentang umat Muslim sebagai umat terbaik yang dilahirkan untuk umat manusia." },

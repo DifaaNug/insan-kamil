@@ -36,6 +36,7 @@ model Article {
   title         String
   category      String
   authorName    String           // Display name of author
+  image         String?          // Featured image URL
   date          DateTime         @default(now())
   content       Json             // Array of ArticleContent
   createdAt     DateTime         @default(now())

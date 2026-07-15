@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 
 export default async function LatestPosts() {
@@ -66,23 +67,33 @@ export default async function LatestPosts() {
                   key={post.id}
                   className="group flex flex-col md:flex-row gap-6 p-6 bg-background rounded-xl hover:shadow-md transition-shadow"
                 >
-                  {/* Thumbnail Placeholder */}
-                  <div className="flex-shrink-0 w-full md:w-48 h-32 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg overflow-hidden">
-                    <div className="w-full h-full flex items-center justify-center">
-                      <svg
-                        className="w-12 h-12 text-primary/30"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1.5}
-                          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                        />
-                      </svg>
-                    </div>
+                  {/* Thumbnail */}
+                  <div className="flex-shrink-0 w-full md:w-48 h-32 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg overflow-hidden relative">
+                    {(post as any).image ? (
+                      <Image
+                        src={(post as any).image}
+                        alt={post.title}
+                        fill
+                        className="object-cover"
+                        sizes="192px"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <svg
+                          className="w-12 h-12 text-primary/30"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1.5}
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                          />
+                        </svg>
+                      </div>
+                    )}
                   </div>
 
                   {/* Content */}
