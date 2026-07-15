@@ -3,6 +3,8 @@ import { auth } from "@/lib/auth";
 import { createArticle } from "@/app/actions/articles";
 import ArticleForm from "@/app/components/admin/ArticleForm";
 
+export const dynamic = "force-dynamic";
+
 export default async function NewArticlePage() {
   const session = await auth();
 

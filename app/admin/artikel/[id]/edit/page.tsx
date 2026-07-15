@@ -3,6 +3,8 @@ import { auth } from "@/lib/auth";
 import { getArticleById, updateArticle } from "@/app/actions/articles";
 import ArticleForm from "@/app/components/admin/ArticleForm";
 
+export const dynamic = "force-dynamic";
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }

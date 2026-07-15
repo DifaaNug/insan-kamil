@@ -3,6 +3,8 @@ import { auth } from "@/lib/auth";
 import { getArticleStats, getArticles } from "@/app/actions/articles";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboard() {
   const session = await auth();
 
