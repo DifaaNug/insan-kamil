@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { createArticle } from "@/app/actions/articles";
+import { createArticle, type ArticleContent } from "@/app/actions/articles";
 import ArticleForm from "@/app/components/admin/ArticleForm";
 
 export const dynamic = "force-dynamic";
@@ -19,7 +19,7 @@ export default async function NewArticlePage() {
     slug: string;
     category: string;
     authorName: string;
-    content: any[];
+    content: ArticleContent[];
   }) => {
     "use server";
     const result = await createArticle(data, userId);

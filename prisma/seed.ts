@@ -425,7 +425,7 @@ async function main() {
       await prisma.article.create({
         data: {
           ...article,
-          content: article.content as any,
+          content: article.content as unknown as Record<string, unknown>[],
           authorId: admin.id,
         },
       });

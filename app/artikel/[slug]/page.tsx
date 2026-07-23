@@ -3,6 +3,14 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
 
+interface ArticleContent {
+  type: "paragraph" | "verse" | "heading";
+  arabic?: string;
+  translation?: string;
+  reference?: string;
+  text?: string;
+}
+
 // ISR: Cache selama 60 detik
 export const revalidate = 60;
 
@@ -20,11 +28,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: "Artikel Tidak Ditemukan" };
   }
 
-  const content = article.content as any[];
+  const content = article.content as ArticleContent[];
   const description = content
-    .filter((c: any) => c.type === "paragraph")
+    .filter((c) => c.type === "paragraph")
     .slice(0, 2)
-    .map((c: any) => c.text)
+    .map((c) => c.text)
     .join(" ");
 
   return {
@@ -44,7 +52,7 @@ export default async function ArticlePage({ params }: PageProps) {
     notFound();
   }
 
-  const content = article.content as any[];
+  const content = article.content as ArticleContent[];
 
   return (
     <main className="min-h-screen bg-background">
@@ -129,7 +137,7 @@ export default async function ArticlePage({ params }: PageProps) {
       {/* Content */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="prose prose-lg max-w-none">
-          {content.map((item: any, index: number) => {
+          {content.map((item, index) => {
             if (item.type === "heading") {
               return (
                 <h2

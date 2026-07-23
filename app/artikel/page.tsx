@@ -2,6 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 
+interface ArticleContent {
+  type: "paragraph" | "verse" | "heading";
+  arabic?: string;
+  translation?: string;
+  reference?: string;
+  text?: string;
+}
+
 // ISR: Cache selama 5 menit (lebih lama untuk performa)
 export const revalidate = 300;
 
@@ -162,10 +170,10 @@ export default async function ArticlesPage({ searchParams }: PageProps) {
                     </h2>
 
                     <p className="text-muted text-sm leading-relaxed mb-4 line-clamp-2">
-                      {(article.content as any[])
-                        .filter((c: any) => c.type === "paragraph")
+                      {(article.content as ArticleContent[])
+                        .filter((c) => c.type === "paragraph")
                         .slice(0, 1)
-                        .map((c: any) => c.text)
+                        .map((c) => c.text)
                         .join(" ")}
                     </p>
 

@@ -62,7 +62,7 @@ export async function createArticle(data: ArticleInput, authorId: string) {
     await prisma.article.create({
       data: {
         ...data,
-        content: data.content as any,
+        content: data.content as unknown as Record<string, unknown>[],
         authorId,
       },
     });
@@ -91,7 +91,7 @@ export async function updateArticle(id: string, data: ArticleInput) {
       where: { id },
       data: {
         ...data,
-        content: data.content as any,
+        content: data.content as unknown as Record<string, unknown>[],
       },
     });
 

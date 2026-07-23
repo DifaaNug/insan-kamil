@@ -2,6 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 
+interface ArticleContent {
+  type: "paragraph" | "verse" | "heading";
+  arabic?: string;
+  translation?: string;
+  reference?: string;
+  text?: string;
+}
+
 export default async function Featured() {
   const featuredPosts = await prisma.article.findMany({
     take: 3,
@@ -29,14 +37,14 @@ export default async function Featured() {
         {/* Featured Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredPosts.map((post) => {
-            const content = post.content as any[];
+            const content = post.content as ArticleContent[];
             const firstParagraph = content
-              .filter((c: any) => c.type === "paragraph")
+              .filter((c) => c.type === "paragraph")
               .slice(0, 1)
-              .map((c: any) => c.text)
+              .map((c) => c.text)
               .join(" ");
 
-            const firstVerse = content.find((c: any) => c.type === "verse");
+            const firstVerse = content.find((c) => c.type === "verse");
 
             return (
               <article
@@ -45,9 +53,9 @@ export default async function Featured() {
               >
                 {/* Image */}
                 <div className="relative h-48 bg-gradient-to-br from-primary/20 to-primary/5 overflow-hidden">
-                  {(post as any).image ? (
+                  {post.image ? (
                     <Image
-                      src={(post as any).image}
+                      src={post.image}
                       alt={post.title}
                       fill
                       className="object-cover"

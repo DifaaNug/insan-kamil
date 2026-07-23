@@ -1,6 +1,6 @@
 import { redirect, notFound } from "next/navigation";
 import { auth } from "@/lib/auth";
-import { getArticleById, updateArticle } from "@/app/actions/articles";
+import { getArticleById, updateArticle, type ArticleContent } from "@/app/actions/articles";
 import ArticleForm from "@/app/components/admin/ArticleForm";
 
 export const dynamic = "force-dynamic";
@@ -28,7 +28,7 @@ export default async function EditArticlePage({ params }: PageProps) {
     slug: string;
     category: string;
     authorName: string;
-    content: any[];
+    content: ArticleContent[];
   }) => {
     "use server";
     const result = await updateArticle(id, data);
@@ -52,7 +52,7 @@ export default async function EditArticlePage({ params }: PageProps) {
           slug: article.slug,
           category: article.category,
           authorName: article.authorName,
-          content: article.content as any[],
+          content: article.content as ArticleContent[],
         }}
         onSubmit={handleSubmit}
       />

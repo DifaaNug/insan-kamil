@@ -2,6 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 
+interface ArticleContent {
+  type: "paragraph" | "verse" | "heading";
+  arabic?: string;
+  translation?: string;
+  reference?: string;
+  text?: string;
+}
+
 export default async function LatestPosts() {
   const latestPosts = await prisma.article.findMany({
     take: 5,
@@ -54,12 +62,12 @@ export default async function LatestPosts() {
             </div>
           ) : (
             latestPosts.map((post) => {
-              const content = post.content as any[];
-              const firstVerse = content.find((c: any) => c.type === "verse");
+              const content = post.content as ArticleContent[];
+              const firstVerse = content.find((c) => c.type === "verse");
               const firstParagraph = content
-                .filter((c: any) => c.type === "paragraph")
+                .filter((c) => c.type === "paragraph")
                 .slice(0, 1)
-                .map((c: any) => c.text)
+                .map((c) => c.text)
                 .join(" ");
 
               return (
@@ -68,10 +76,10 @@ export default async function LatestPosts() {
                   className="group flex flex-col md:flex-row gap-6 p-6 bg-background rounded-xl hover:shadow-md transition-shadow"
                 >
                   {/* Thumbnail */}
-                  <div className="flex-shrink-0 w-full md:w-48 h-32 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg overflow-hidden relative">
-                    {(post as any).image ? (
+                  <div className="shrink-0 w-full md:w-48 h-32 bg-gradient-to-br from-primary/10 to-primary/5 rounded-lg overflow-hidden relative">
+                    {post.image ? (
                       <Image
-                        src={(post as any).image}
+                        src={post.image}
                         alt={post.title}
                         fill
                         className="object-cover"
