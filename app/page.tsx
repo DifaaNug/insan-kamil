@@ -1,4 +1,4 @@
-import Navbar from "./components/Navbar";
+import NavbarWrapper from "./components/NavbarWrapper";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Featured from "./components/Featured";
@@ -12,7 +12,7 @@ export const revalidate = 60;
 export default function Home() {
   return (
     <main className="min-h-screen">
-      <Navbar />
+      <NavbarWrapper />
       <Hero />
       <About />
       <Featured />
