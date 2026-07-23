@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -425,7 +425,7 @@ async function main() {
       await prisma.article.create({
         data: {
           ...article,
-          content: article.content as unknown as Record<string, unknown>[],
+          content: article.content as unknown as Prisma.InputJsonValue,
           authorId: admin.id,
         },
       });

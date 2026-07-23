@@ -37,7 +37,7 @@ export default async function Featured() {
         {/* Featured Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featuredPosts.map((post) => {
-            const content = post.content as ArticleContent[];
+            const content = post.content as unknown as ArticleContent[];
             const firstParagraph = content
               .filter((c) => c.type === "paragraph")
               .slice(0, 1)

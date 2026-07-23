@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: "Artikel Tidak Ditemukan" };
   }
 
-  const content = article.content as ArticleContent[];
+  const content = article.content as unknown as ArticleContent[];
   const description = content
     .filter((c) => c.type === "paragraph")
     .slice(0, 2)
@@ -52,7 +52,7 @@ export default async function ArticlePage({ params }: PageProps) {
     notFound();
   }
 
-  const content = article.content as ArticleContent[];
+  const content = article.content as unknown as ArticleContent[];
 
   return (
     <main className="min-h-screen bg-background">

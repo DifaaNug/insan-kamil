@@ -17,11 +17,10 @@ declare module "next-auth" {
   }
 }
 
-declare module "next-auth/jwt" {
-  interface JWT {
-    id?: string;
-    role?: string;
-  }
+interface TokenWithRole {
+  role?: string;
+  id?: string;
+  [key: string]: unknown;
 }
 
 export const {
@@ -78,15 +77,17 @@ export const {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role;
-        token.id = user.id;
+        const t = token as TokenWithRole;
+        t.role = user.role;
+        t.id = user.id;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.role = token.role;
-        session.user.id = token.id;
+        const t = token as TokenWithRole;
+        session.user.role = t.role;
+        session.user.id = t.id ?? "";
       }
       return session;
     },

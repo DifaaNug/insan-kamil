@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -62,7 +63,7 @@ export async function createArticle(data: ArticleInput, authorId: string) {
     await prisma.article.create({
       data: {
         ...data,
-        content: data.content as unknown as Record<string, unknown>[],
+        content: data.content as unknown as Prisma.InputJsonValue,
         authorId,
       },
     });
@@ -91,7 +92,7 @@ export async function updateArticle(id: string, data: ArticleInput) {
       where: { id },
       data: {
         ...data,
-        content: data.content as unknown as Record<string, unknown>[],
+        content: data.content as unknown as Prisma.InputJsonValue,
       },
     });
 

@@ -62,7 +62,7 @@ export default async function LatestPosts() {
             </div>
           ) : (
             latestPosts.map((post) => {
-              const content = post.content as ArticleContent[];
+              const content = post.content as unknown as ArticleContent[];
               const firstVerse = content.find((c) => c.type === "verse");
               const firstParagraph = content
                 .filter((c) => c.type === "paragraph")

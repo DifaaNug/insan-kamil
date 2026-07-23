@@ -170,7 +170,7 @@ export default async function ArticlesPage({ searchParams }: PageProps) {
                     </h2>
 
                     <p className="text-muted text-sm leading-relaxed mb-4 line-clamp-2">
-                      {(article.content as ArticleContent[])
+                      {(article.content as unknown as ArticleContent[])
                         .filter((c) => c.type === "paragraph")
                         .slice(0, 1)
                         .map((c) => c.text)

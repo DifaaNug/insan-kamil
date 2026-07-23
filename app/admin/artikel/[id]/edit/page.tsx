@@ -52,7 +52,7 @@ export default async function EditArticlePage({ params }: PageProps) {
           slug: article.slug,
           category: article.category,
           authorName: article.authorName,
-          content: article.content as ArticleContent[],
+          content: article.content as unknown as ArticleContent[],
         }}
         onSubmit={handleSubmit}
       />
