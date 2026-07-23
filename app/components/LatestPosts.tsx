@@ -76,6 +76,7 @@ export default async function LatestPosts() {
                         fill
                         className="object-cover"
                         sizes="192px"
+                        quality={65}
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">

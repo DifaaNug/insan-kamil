@@ -52,6 +52,7 @@ export default async function Featured() {
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      quality={70}
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
