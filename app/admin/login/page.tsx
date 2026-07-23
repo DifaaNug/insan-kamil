@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { login } from "@/app/actions/auth";
 
 function LoginForm() {
@@ -92,12 +93,12 @@ function LoginForm() {
 
       {/* Back to Home */}
       <div className="mt-6 text-center">
-        <a
+        <Link
           href="/"
           className="text-sm text-muted hover:text-primary transition-colors"
         >
           ← Kembali ke Beranda
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -70,7 +70,7 @@ export async function createArticle(data: ArticleInput, authorId: string) {
     revalidatePath("/admin/artikel");
     revalidatePath("/artikel");
     redirect("/admin/artikel");
-  } catch (error) {
+  } catch {
     return { success: false, error: "Gagal membuat artikel" };
   }
 }
@@ -99,7 +99,7 @@ export async function updateArticle(id: string, data: ArticleInput) {
     revalidatePath("/artikel");
     revalidatePath(`/artikel/${data.slug}`);
     redirect("/admin/artikel");
-  } catch (error) {
+  } catch {
     return { success: false, error: "Gagal mengupdate artikel" };
   }
 }
@@ -114,7 +114,7 @@ export async function deleteArticle(id: string) {
     revalidatePath("/admin/artikel");
     revalidatePath("/artikel");
     return { success: true };
-  } catch (error) {
+  } catch {
     return { success: false, error: "Gagal menghapus artikel" };
   }
 }

@@ -13,7 +13,7 @@ export async function login(email: string, password: string) {
       redirect: false,
     });
     return { success: true };
-  } catch (error) {
+  } catch {
     return { success: false, error: "Email atau password salah" };
   }
 }
@@ -53,7 +53,7 @@ export async function register(email: string, password: string, name: string) {
     });
 
     return { success: true };
-  } catch (error) {
+  } catch {
     return { success: false, error: "Gagal membuat akun" };
   }
 }
