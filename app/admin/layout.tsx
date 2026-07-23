@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import { logout } from "@/app/actions/auth";
 
 const menuItems = [
   {
@@ -40,12 +41,20 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // Don't show layout on login page
   if (pathname === "/admin/login") {
     return <>{children}</>;
   }
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+    await logout();
+    router.push("/admin/login");
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -68,6 +77,7 @@ export default function AdminLayout({
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
+        {/* Logo */}
         <div className="p-6">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center">
@@ -78,6 +88,7 @@ export default function AdminLayout({
           <p className="text-white/60 text-sm mt-2">Admin Panel</p>
         </div>
 
+        {/* Navigation */}
         <nav className="px-4 space-y-2">
           {menuItems.map((item) => (
             <Link
@@ -96,16 +107,18 @@ export default function AdminLayout({
           ))}
         </nav>
 
+        {/* Logout Button */}
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-white/10">
-          <Link
-            href="/"
-            className="flex items-center gap-2 text-white/70 hover:text-white transition-colors"
+          <button
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="flex items-center gap-2 text-white/70 hover:text-red-300 transition-colors text-sm w-full disabled:opacity-50"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
-            <span>Kembali ke Website</span>
-          </Link>
+            <span>{isLoggingOut ? "Keluar..." : "Keluar"}</span>
+          </button>
         </div>
       </aside>
 

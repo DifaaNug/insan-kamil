@@ -15,6 +15,13 @@ export default async function AdminDashboard() {
   const stats = await getArticleStats();
   const recentArticles = await getArticles();
 
+  // Get current time for greeting
+  const hour = new Date().getHours();
+  let greeting = "Selamat Pagi";
+  if (hour >= 11 && hour < 15) greeting = "Selamat Siang";
+  else if (hour >= 15 && hour < 18) greeting = "Selamat Sore";
+  else if (hour >= 18) greeting = "Selamat Malam";
+
   return (
     <div>
       {/* Header */}
@@ -23,7 +30,7 @@ export default async function AdminDashboard() {
           Dashboard
         </h1>
         <p className="text-muted mt-2">
-          Selamat datang, {session.user?.name || session.user?.email}
+          {greeting}, {session.user?.name || session.user?.email} 👋
         </p>
       </div>
 

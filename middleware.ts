@@ -16,13 +16,17 @@ export function middleware(request: NextRequest) {
 
   // Check for any NextAuth session cookie (v4 and v5)
   const cookies = request.cookies;
-  const hasSession = cookies.has("next-auth.session-token")
-    || cookies.has("__Secure-next-auth.session-token")
-    || cookies.has("authjs.session-token")
-    || cookies.has("__Secure-authjs.session-token");
+  const hasSession =
+    cookies.has("next-auth.session-token") ||
+    cookies.has("__Secure-next-auth.session-token") ||
+    cookies.has("authjs.session-token") ||
+    cookies.has("__Secure-authjs.session-token");
 
+  // If no session, redirect to login with callback URL
   if (!hasSession) {
-    return NextResponse.redirect(new URL("/admin/login", request.url));
+    const loginUrl = new URL("/admin/login", request.url);
+    loginUrl.searchParams.set("callbackUrl", pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();
