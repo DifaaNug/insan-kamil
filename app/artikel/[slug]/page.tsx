@@ -1,7 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
+import ShareButtons from "@/app/components/ShareButtons";
+import BackToTop from "@/app/components/BackToTop";
 
 interface ArticleContent {
   type: "paragraph" | "verse" | "heading";
@@ -16,6 +19,15 @@ export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+// Hitung waktu baca (estimasi 200 kata per menit)
+function calculateReadingTime(content: ArticleContent[]): number {
+  const totalWords = content.reduce((acc, item) => {
+    const text = item.text || item.translation || item.arabic || "";
+    return acc + text.split(/\s+/).length;
+  }, 0);
+  return Math.max(1, Math.ceil(totalWords / 200));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -53,6 +65,17 @@ export default async function ArticlePage({ params }: PageProps) {
   }
 
   const content = article.content as unknown as ArticleContent[];
+  const readingTime = calculateReadingTime(content);
+
+  // Fetch related articles (same category, excluding current)
+  const relatedArticles = await prisma.article.findMany({
+    where: {
+      category: article.category,
+      slug: { not: slug },
+    },
+    take: 3,
+    orderBy: { date: "desc" },
+  });
 
   return (
     <main className="min-h-screen bg-background">
@@ -130,12 +153,36 @@ export default async function ArticlePage({ params }: PageProps) {
               </svg>
               {article.authorName}
             </span>
+            <span className="flex items-center gap-2">
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              {readingTime} menit baca
+            </span>
           </div>
         </div>
       </div>
 
       {/* Content */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+        {/* Share Buttons */}
+        <div className="mb-8 pb-6 border-b border-border">
+          <ShareButtons
+            title={article.title}
+            url={`https://insan-kamil-inky.vercel.app/artikel/${slug}`}
+          />
+        </div>
+
         <div className="prose prose-lg max-w-none">
           {content.map((item, index) => {
             if (item.type === "heading") {
@@ -187,7 +234,60 @@ export default async function ArticlePage({ params }: PageProps) {
           })}
         </div>
 
-        {/* Navigation to other articles */}
+        {/* Share Buttons Bottom */}
+        <div className="mt-12 pt-8 border-t border-border">
+          <ShareButtons
+            title={article.title}
+            url={`https://insan-kamil-inky.vercel.app/artikel/${slug}`}
+          />
+        </div>
+
+        {/* Related Articles */}
+        {relatedArticles.length > 0 && (
+          <div className="mt-16 pt-8 border-t border-border">
+            <h3 className="text-2xl font-bold text-foreground mb-8 font-serif">
+              Artikel Terkait
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {relatedArticles.map((related) => (
+                <Link
+                  key={related.slug}
+                  href={`/artikel/${related.slug}`}
+                  className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div className="relative h-32 bg-gradient-to-br from-primary/10 to-primary/5">
+                    {related.image ? (
+                      <Image
+                        src={related.image}
+                        alt={related.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        quality={60}
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <svg className="w-10 h-10 text-primary/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-4">
+                    <span className="text-xs text-primary font-medium">
+                      {related.category}
+                    </span>
+                    <h4 className="text-sm font-bold text-foreground mt-1 line-clamp-2 group-hover:text-primary transition-colors font-serif">
+                      {related.title}
+                    </h4>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Navigation */}
         <div className="mt-16 pt-8 border-t border-border">
           <Link
             href="/artikel"
@@ -210,6 +310,9 @@ export default async function ArticlePage({ params }: PageProps) {
           </Link>
         </div>
       </article>
+
+      {/* Back to Top Button */}
+      <BackToTop />
     </main>
   );
 }

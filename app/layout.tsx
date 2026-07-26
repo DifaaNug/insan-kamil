@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter, Noto_Naskh_Arabic } from "next/font/google";
+import BackToTop from "./components/BackToTop";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -61,7 +62,10 @@ export default function RootLayout({
       lang="id"
       className={`${playfair.variable} ${inter.variable} ${notoArabic.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <BackToTop />
+      </body>
     </html>
   );
 }

@@ -21,6 +21,7 @@ const categories = [
         />
       </svg>
     ),
+    slug: "Tafsir",
     count: "20+ Artikel",
     color: "from-blue-500/10 to-blue-600/5",
     iconColor: "text-blue-600",
@@ -45,6 +46,7 @@ const categories = [
         />
       </svg>
     ),
+    slug: "Dakwah",
     count: "15+ Artikel",
     color: "from-emerald-500/10 to-emerald-600/5",
     iconColor: "text-emerald-600",
@@ -69,6 +71,7 @@ const categories = [
         />
       </svg>
     ),
+    slug: "Ukhuwah",
     count: "15+ Artikel",
     color: "from-purple-500/10 to-purple-600/5",
     iconColor: "text-purple-600",
@@ -99,7 +102,7 @@ export default function Categories() {
           {categories.map((category) => (
             <Link
               key={category.id}
-              href="#"
+              href={`/artikel?category=${category.slug}`}
               className="group p-8 bg-white rounded-2xl shadow-sm card-hover text-center"
             >
               {/* Icon */}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
+import ArticleFilters from "@/app/components/ArticleFilters";
 
 interface ArticleContent {
   type: "paragraph" | "verse" | "heading";
@@ -22,22 +23,39 @@ export const metadata = {
 };
 
 interface PageProps {
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; search?: string; category?: string }>;
 }
 
 export default async function ArticlesPage({ searchParams }: PageProps) {
   const resolvedParams = await searchParams;
   const currentPage = parseInt(resolvedParams.page || "1", 10);
+  const search = resolvedParams.search || "";
+  const category = resolvedParams.category || "";
   const skip = (currentPage - 1) * POSTS_PER_PAGE;
 
-  // Fetch articles with pagination
+  // Build filter conditions
+  const where: Record<string, unknown> = {};
+
+  if (search) {
+    where.OR = [
+      { title: { contains: search, mode: "insensitive" } },
+      { authorName: { contains: search, mode: "insensitive" } },
+    ];
+  }
+
+  if (category) {
+    where.category = category;
+  }
+
+  // Fetch articles with pagination and filters
   const [articles, totalCount] = await Promise.all([
     prisma.article.findMany({
+      where,
       orderBy: { date: "desc" },
       take: POSTS_PER_PAGE,
       skip,
     }),
-    prisma.article.count(),
+    prisma.article.count({ where }),
   ]);
 
   const totalPages = Math.ceil(totalCount / POSTS_PER_PAGE);
@@ -76,24 +94,35 @@ export default async function ArticlesPage({ searchParams }: PageProps) {
           </p>
           <p className="text-white/50 mt-2 text-sm">
             Total {totalCount} artikel
+            {search && <span> • Hasil pencarian &quot;{search}&quot;</span>}
+            {category && <span> • Kategori: {category}</span>}
           </p>
         </div>
       </div>
 
-      {/* Articles List */}
+      {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        {/* Filters */}
+        <ArticleFilters />
+
         {articles.length === 0 ? (
           <div className="text-center py-16">
             <svg className="w-20 h-20 text-muted/30 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
-            <p className="text-muted text-lg">Belum ada artikel</p>
-            <Link
-              href="/"
-              className="inline-flex items-center mt-4 text-primary hover:text-primary-light transition-colors"
-            >
-              ← Kembali ke Beranda
-            </Link>
+            <p className="text-muted text-lg">
+              {search || category
+                ? "Tidak ada artikel yang sesuai dengan filter"
+                : "Belum ada artikel"}
+            </p>
+            {(search || category) && (
+              <Link
+                href="/artikel"
+                className="inline-flex items-center mt-4 text-primary hover:text-primary-light transition-colors"
+              >
+                Reset filter
+              </Link>
+            )}
           </div>
         ) : (
           <>
@@ -204,7 +233,7 @@ export default async function ArticlesPage({ searchParams }: PageProps) {
                 {/* Previous Button */}
                 {currentPage > 1 ? (
                   <Link
-                    href={`/artikel?page=${currentPage - 1}`}
+                    href={`/artikel?page=${currentPage - 1}${search ? `&search=${search}` : ""}${category ? `&category=${category}` : ""}`}
                     className="px-4 py-2 rounded-lg border border-gray-300 text-foreground hover:bg-gray-50 transition-colors"
                   >
                     ← Sebelumnya
@@ -216,11 +245,11 @@ export default async function ArticlesPage({ searchParams }: PageProps) {
                 )}
 
                 {/* Page Numbers */}
-                <div className="flex gap-1">
+                <div className="hidden sm:flex gap-1">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                     <Link
                       key={page}
-                      href={`/artikel?page=${page}`}
+                      href={`/artikel?page=${page}${search ? `&search=${search}` : ""}${category ? `&category=${category}` : ""}`}
                       className={`w-10 h-10 flex items-center justify-center rounded-lg transition-colors ${
                         page === currentPage
                           ? "bg-primary text-white"
@@ -232,10 +261,15 @@ export default async function ArticlesPage({ searchParams }: PageProps) {
                   ))}
                 </div>
 
+                {/* Page Info for Mobile */}
+                <span className="sm:hidden text-sm text-muted">
+                  Halaman {currentPage} dari {totalPages}
+                </span>
+
                 {/* Next Button */}
                 {currentPage < totalPages ? (
                   <Link
-                    href={`/artikel?page=${currentPage + 1}`}
+                    href={`/artikel?page=${currentPage + 1}${search ? `&search=${search}` : ""}${category ? `&category=${category}` : ""}`}
                     className="px-4 py-2 rounded-lg border border-gray-300 text-foreground hover:bg-gray-50 transition-colors"
                   >
                     Selanjutnya →

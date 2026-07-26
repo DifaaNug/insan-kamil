@@ -11,8 +11,10 @@ interface ArticleContent {
 }
 
 export default async function Featured() {
+  // Ambil artikel unggulan (skip 5 artikel terbaru yang ditampilkan di Latest)
   const featuredPosts = await prisma.article.findMany({
     take: 3,
+    skip: 5,
     orderBy: { date: "desc" },
   });
 
